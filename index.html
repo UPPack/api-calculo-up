@@ -492,4 +492,54 @@
         }
     </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cd5a430529dca97',t:'MTc3MDk5OTUwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;"></iframe>
-</body></html>
+<script>
+function calcularBCT() {
+  // Tipo de onda
+  const wave = document.querySelector('input[name="wave-type"]:checked')?.value;
+  if (!wave) {
+    alert("Selecione o tipo de onda");
+    return;
+  }
+
+  // Valores principais
+  const material = parseFloat(document.getElementById("material-column").value);
+  const thickness = parseFloat(document.getElementById("thickness").value);
+  const length = parseFloat(document.getElementById("length").value);
+  const width = parseFloat(document.getElementById("width").value);
+  const height = parseFloat(document.getElementById("height").value);
+
+  if (!material || !thickness || !length || !width || !height) {
+    alert("Preencha todos os campos");
+    return;
+  }
+
+  // Fatores
+  const humidity = document.querySelector('input[name="humidity"]:checked')?.value || 1;
+  const handling = document.querySelector('input[name="handling"]:checked')?.value || 1;
+  const stacking = document.querySelector('input[name="stacking"]:checked')?.value || 1;
+  const storage = document.querySelector('input[name="storage"]:checked')?.value || 1;
+  const product = document.querySelector('input[name="product"]:checked')?.value || 1;
+
+  // Fórmula BCT simplificada
+  const perimetro = 2 * (length + width);
+
+  let bct =
+    material *
+    thickness *
+    wave *
+    perimetro *
+    humidity *
+    handling *
+    stacking *
+    storage *
+    product;
+
+  // Resultado
+  document.getElementById("resultado-bct").innerText =
+    bct.toFixed(2) + " kgf";
+
+  document.getElementById("box-resultado").classList.remove("hidden");
+}
+</script>
+
+ </body></html>
