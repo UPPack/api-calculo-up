@@ -1,28 +1,37 @@
+import fs from "fs";
 import path from "path";
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
 
-  // De onde veio o acesso
-  const referer = req.headers.referer || "";
+  try {
 
-  // Domínio autorizado (UP Pack)
-  const dominioPermitido = "uppack.com.br";
+    const referer = req.headers.referer || "";
 
-  // Bloqueio
-  if (!referer.includes(dominioPermitido)) {
-    return res.status(403).send(`
-      <html>
-        <body style="font-family:Arial;text-align:center;margin-top:100px;">
-          <h2>Acesso restrito</h2>
-        </body>
-      </html>
-    `);
+    const dominioPermitido = "uppack.com.br";
+
+    // Bloqueio
+    if (!referer.includes(dominioPermitido)) {
+      return res.status(403).send(`
+        <html>
+          <body style="font-family:Arial;text-align:center;margin-top:100px;">
+            <h2>Acesso restrito</h2>
+          </body>
+        </html>
+      `);
+    }
+
+    // Lê o HTML manualmente
+    const filePath = path.join(process.cwd(), "public/index.html");
+
+    const html = fs.readFileSync(filePath, "utf8");
+
+    res.setHeader("Content-Type", "text/html");
+    res.status(200).send(html);
+
+  } catch (error) {
+
+    console.error("Erro protect:", error);
+
+    res.status(500).send("Erro interno");
   }
-
-  // Caminho do HTML
-  const filePath = path.join(process.cwd(), "public/index.html");
-
-  // Envia o conteúdo
-  res.sendFile(filePath);
 }
-
